@@ -2,7 +2,9 @@ package co.nelson.appuno;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +13,7 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
    TextView nombreUsuario;
-   Button btn1,btn2;
+   Button btn1,btn2,Alarma;
    String Tag = "Prueba";
 
     @Override
@@ -22,14 +24,23 @@ public class MainActivity extends AppCompatActivity {
         nombreUsuario = (TextView) findViewById(R.id.usuario);
         btn1 = findViewById(R.id.btn1);
         btn2 = findViewById(R.id.btn2);
+        Alarma = findViewById(R.id.Alarma);
+
+        Alarma.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createAlarm("Despertar", "8", "30");
+            }
+        });
+
 
 
         btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                nombreUsuario.setText("Presioné Boton Uno");
+                    @Override
+                    public void onClick(View view) {
+                        nombreUsuario.setText("Presioné Boton Uno");
 
-            }
+                    }
         });
 
         btn2.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +88,15 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         Log.i(Tag,"Estoy en OnDestroy");
     }
+
+    public void createAlarm(String message, String hour, String minutes) {
+        Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
+                .putExtra(AlarmClock.EXTRA_MESSAGE, message)
+                .putExtra(AlarmClock.EXTRA_HOUR, hour)
+                .putExtra(AlarmClock.EXTRA_MINUTES, minutes);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 }
 
---agregar item
